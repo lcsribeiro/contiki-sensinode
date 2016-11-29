@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Loughborough University - Computer Science
+ * Copyright (c) 2011, George Oikonomou - <oikonomou@users.sourceforge.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,23 +27,46 @@
  * SUCH DAMAGE.
  *
  * This file is part of the Contiki operating system.
- *
  */
 
 /**
  * \file
- *         Project specific configuration defines for the UDP client/server
- *         example.
+ *         Header file for BMP280 sensor on the PPSEAI11 kit.
+ *
+ *         Sensors will be off by default, unless turned on explicitly
+ *         in contiki-conf.h
  *
  * \author
  *         George Oikonomou - <oikonomou@users.sourceforge.net>
  */
 
-#ifndef PROJECT_CONF_H_
-#define PROJECT_CONF_H_
+#ifndef __BMP_SENSOR_H__
+#define __BMP_SENSOR_H__
 
-#define BUTTON_SENSOR_CONF_ON 1
-#define UIP_CONF_ICMP6        1
-#define STACK_CONF_DEBUGGING  1
+#include "cc253x.h"
+#include "contiki-conf.h"
+#include "lib/sensors.h"
 
-#endif /* PROJECT_CONF_H_ */
+/* BMP Sensor Types */
+#define BMP_SENSOR "BMP"
+
+#ifdef BMP_SENSOR_CONF_ON
+#define BMP_SENSOR_ON BMP_SENSOR_CONF_ON
+#endif /* BMP_SENSOR_CONF_ON */
+
+
+#if BMP_SENSOR_ON
+extern const struct sensors_sensor bmp_sensor;
+#define   BMP_SENSOR_ACTIVATE() bmp_sensor.configure(SENSORS_ACTIVE, 1)
+#else
+#define   BMP_SENSOR_ACTIVATE()
+#endif /* BMP_SENSOR_ON */
+
+#define BMP_SENSOR_TYPE_TEMP    0
+#define BMP_SENSOR_TYPE_PRESS_hPa   1
+#define BMP_SENSOR_TYPE_LAST_READ_PRESS_Pa_MSB 2
+#define BMP_SENSOR_TYPE_LAST_READ_PRESS_Pa_LSB 3
+
+#define SDO_MASK  0x80
+
+#endif /* __BMP_SENSOR_H__ */

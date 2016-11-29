@@ -39,9 +39,13 @@
 
 #include "dev/button-sensor.h"
 #include "dev/adc-sensor.h"
+#include "dev/bmp280-sensor.h"
 #include "sys/energest.h"
 
 const struct sensors_sensor *sensors[] = {
+#if BMP_SENSOR_ON
+  &bmp_sensor,
+#endif
 #if ADC_SENSOR_ON
   &adc_sensor,
 #endif
